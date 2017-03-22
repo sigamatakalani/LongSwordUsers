@@ -86,6 +86,35 @@ public class UserRestFull {
         return success;
     }
     
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/adduser")
+    public Boolean addUser(User user){
+        //add  the user and return true if the user has been added
+        Boolean success = true;
+        return success;
+    }
     
-
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/removeuser")
+    public Boolean removeUser(User user){
+        //add  the user and return true if the user has been added
+        Boolean success = true;
+        return success;
+    }
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/grantadminright")
+    public Boolean grantAdminRight(User user){
+        //grant admin rights to this user
+        Boolean success = true;
+        return success;
+    }
+    
+    
 }
