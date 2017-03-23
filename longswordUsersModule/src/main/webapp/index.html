@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
+        <title>Tester Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     </head>
-    <body>
+    <body ng-app="TesterApp" ng-controller="testerCtrl">
         <h1>Hello here</h1>
+        <div id="display" ng-model="showplace">
+        </div>
+        <button ng-click="testUrl">click me</button>
+<script>
+    var app = angular.module('TesterApp', []);
+    function testerCtrl($scope,$http)
+    {
+        
+    $scope.testUrl = function()
+    {
+        $http({method:'POST',
+                url:'http://localhost:9999/longswordUsersModule/userManager/user/getUser',
+                data 	:$.param("Tk"),
+                headers	:{'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function(data){
+                console.log(data);
+                if(!data.success)
+                {
+                   $scope.showplace = "Error";
+                }else
+                {
+                    $scope.showplace = data;
+                }
+             });
+             
+         };
+     }
+</script>
     </body>
 </html>
+

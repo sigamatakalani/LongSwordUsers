@@ -7,8 +7,4 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
-  <servlet-mapping>
-    <servlet-name>Jersey REST Service</servlet-name>
-    <url-pattern>/userManager/*</url-pattern>
-  </servlet-mapping>
 </glassfish-web-app>

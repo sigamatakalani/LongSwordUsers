@@ -23,9 +23,9 @@ public class UserRestFull {
     @Path("/findall")
     public ArrayList findAll(){
         ArrayList newList = new ArrayList<>();
-        newList.add(new User("taki","123"));
-        newList.add(new User("Pete","typ"));
-        newList.add(new User("Marry","retw"));
+        newList.add(new User(1,"taki","123",false));
+        newList.add(new User(2,"Pete","typ",true));
+        newList.add(new User(3,"Marry","retw",false));
         return newList;
     }
 
@@ -41,7 +41,7 @@ public class UserRestFull {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/getuser")
     public User getUser(String username){
-        User wantedUser = new User(username,"456");
+        User wantedUser = new User(4,username,"456",false);
         return wantedUser;
     }
     
@@ -51,14 +51,14 @@ public class UserRestFull {
      * @param password
      * @return
      */
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/authenticate")
     public Boolean authenticate(String username,String password){
         //check authenticate user then return true or false
+        //create session
         Boolean isAuth = true;
-        
         return isAuth;
     }
     
@@ -82,6 +82,7 @@ public class UserRestFull {
     @Path("/registerssuser")
     public Boolean registerAsUser(String username,String password){
         //Register the user and return succes or failed
+         User newUser = new User(5,username,"456",false);
         Boolean success = true;
         return success;
     }
@@ -92,6 +93,8 @@ public class UserRestFull {
     @Path("/adduser")
     public Boolean addUser(User user){
         //add  the user and return true if the user has been added
+        //check if the current logged in user is an addmin if not return false
+         User wantedUser = new User(4,user.getUsername(),"456",false);
         Boolean success = true;
         return success;
     }
