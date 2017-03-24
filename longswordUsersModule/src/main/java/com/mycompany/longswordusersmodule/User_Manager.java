@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 package com.mycompany.longswordusersmodule;
-import java.util.*;
+import java.util.*; 
 
 /**
  *
  * @author takalani
  */
-public class User_Manager implements User_Interface{
+public abstract class User_Manager implements User_Interface{
   
     public ArrayList findAll(){
         ArrayList newList = new ArrayList<>();
@@ -29,6 +29,7 @@ public class User_Manager implements User_Interface{
      */
  
     public User getUser(String username){
+        //Do a database request to find the user by username and return the user object
         User wantedUser = new User(4,username,"456",false);
         return wantedUser;
     }
@@ -41,8 +42,8 @@ public class User_Manager implements User_Interface{
      */
 
     public Boolean authenticate(String username,String password){
-        //check authenticate user then return true or false
-        //create session
+        //Takes in a username and password and finds a match from the db if not found then return false if found return true
+        //If true then session will be created in the webservice an user will be logged in
         Boolean isAuth = true;
         return isAuth;
     }
@@ -53,12 +54,12 @@ public class User_Manager implements User_Interface{
      */
 
     public Boolean isAuthenticated(){
-        //check authenticate user then return true or false using somekind of session management
+        //Checks if theres still an active session if not returnes false
         Boolean isAuth = true;
         return isAuth;
     }
     
-  
+ 
     public Boolean registerAsUser(String username,String password){
         //Register the user and return succes or failed
          User newUser = new User(5,username,"456",false);
