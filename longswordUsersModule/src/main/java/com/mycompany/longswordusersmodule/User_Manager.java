@@ -4,19 +4,20 @@
  * and open the template in the editor.
  */
 package com.mycompany.longswordusersmodule;
+import Mocking.UserFacade;
 import java.util.*; 
+import junit.framework.Assert;
 
 /**
  *
  * @author takalani
  */
 public abstract class User_Manager implements User_Interface{
+    
+    UserFacade uFacade;
   
-    public ArrayList findAll(){
-        ArrayList newList = new ArrayList<>();
-        newList.add(new User(1,"taki","123",false));
-        newList.add(new User(2,"Pete","typ",true));
-        newList.add(new User(3,"Marry","retw",false));
+    public List<User> findAll(){
+        List<User> newList = uFacade.getAll();
         return newList;
     }
 
@@ -62,7 +63,9 @@ public abstract class User_Manager implements User_Interface{
  
     public Boolean registerAsUser(String username,String password){
         //Register the user and return succes or failed
-         User newUser = new User(5,username,"456",false);
+        User newUser = new User(username,password);
+        uFacade.create(newUser);
+        Assert.assertNotNull(uFacade);
         Boolean success = true;
         return success;
     }
