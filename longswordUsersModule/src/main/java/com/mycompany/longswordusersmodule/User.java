@@ -205,5 +205,7 @@ public class User implements Serializable {
         this.resetDate = resetDate;
     }
     
+ 
+    
     
 }
