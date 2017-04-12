@@ -4,18 +4,16 @@
  * and open the template in the editor.
  */
 package com.mycompany.longswordusersmodule;
-import java.util.ArrayList;
+import org.codehaus.jettison.json.JSONException;
 /**
  *
  * @author takalani
  */
 public interface User_Interface {
-    public User getUser(String userName);
-    public Boolean authenticate(String userName, String password);
-    public Boolean isAuthenticated();
-    public Boolean registerAsUser(String userName, String Password, String firstName, String email, String lastName);
-    public Boolean addUser(User user);
-    public Boolean addUsers(ArrayList<User> users);
-    public Boolean removeUser(User user);
-    public Boolean grantAdminRight(User user);
+   public String getUser(String userName);
+    public String authenticate(String userName, String password);
+    public String isAuthenticated();
+    public String registerAsUser(String jsonUser);
+    public String grantAdminRight(String userName);
+    public String deleteUser(String userName);
 }
