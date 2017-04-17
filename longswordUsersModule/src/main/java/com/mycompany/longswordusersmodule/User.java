@@ -5,8 +5,12 @@
  */
 package com.mycompany.longswordusersmodule;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
+import java.util.HashSet;
 import javax.persistence.*;
 
 /**
@@ -28,22 +32,43 @@ public class User implements Serializable {
     private Boolean activated;
     private String activatedKey;
     private String resetKey;
+   // @Temporal(javax.persistence.TemporalType.DATE)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date resetDate;
     
     public User()
     {
+                //Reset date 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        java.util.Date date= new Date();
+        
+        int mnth = date.getMonth() + 5;
+        int year = date.getYear();
+        if(mnth > 11)
+        {
+            mnth = mnth - 11;
+            year++;
+        }
+        
+        date.setMonth(mnth);
+        date.setYear(year);
+        
+        this.resetDate = date;
     }
     
-    public User(String uName,String password,Boolean isadmin,String lName,String fName, String email)
+    public User(String uName,String password,Boolean isadmin,String lName,String fName, String email,Boolean activated,String activatedKey, String resetKey)
     {
         this.username = uName;
         this.password = password;
         this.isAdmin = isadmin;
-        this.activated = true;
+        this.activated = activated;
         this.lastname = lName;
         this.firstname = fName;
         this.email = email;
+        this.activatedKey = activatedKey;
+        this.resetKey = resetKey;
+        //Reset date 
+
     }
         public User(String uName,String password)
     {

@@ -13,16 +13,23 @@ import com.mycompany.longswordusersmodule.User_Manager;
  *
  * @author takalani
  */
-public class Tester {
+public class Tester{
     
 public static void main(String[] args)
 {       
     System.out.println("Start");
-    User_Manager manager;
+    Tester_Init manager = new Tester_Init(){};
     //User temp = new User("Tk","1234",true,"Sigama","Takalani","sig@gmail.com");        
-  //   manager.authenticate("username", "password");
+//    String val =  manager.getAuth();
+//    System.out.println("added: "+val);
     
-    System.out.println("added: ");
+//    String val2 = manager.getTestUser("{username:Tk}");
+//    System.out.println("test getUser: "+val2);
+    
+    String val3 = manager.addUser("{'username':'Pete2','password':'301','isAdmin':'True','activated':'True','lastname':'Doe','firstname':'Joey','email':'something2@gmail.com','activated':'True','activatedKey':'key1','resetKey':'key2'}");
+    System.out.println("test getUser: "+val3);
+    
+    
 }   
     
     

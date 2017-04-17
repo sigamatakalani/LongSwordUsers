@@ -10,26 +10,31 @@ import java.io.PrintWriter;
 import java.util.*; 
 import junit.framework.Assert;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 
 /**
  *
- * @author takalani
+ * @author takalani sigama
  */
 public abstract class User_Manager implements User_Interface{
     
     UserFacade uFacade;
     
-        private Connection con;
+    private Connection con;
     private Statement st;
     private ResultSet rs;
     PrintWriter pw ;//= new PrintWriter(os, true);
+  //  public static final byte[] SALT =  "Longsword-Users-Salt".getBytes();
 
-    User_Manager(){
+    public User_Manager(){
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/longswordusermanager","root","");
             st= con.createStatement();
         }catch(Exception e){
@@ -196,16 +201,49 @@ public abstract class User_Manager implements User_Interface{
         try{
             this.pw=pw;
             String query;
+           int myInt = (user.getIsAdmin()) ? 1 : 0;
+           int myInt2 = (user.getActivated()) ? 1 : 0;
+           //java.sql.Date date = java.sql.Date.valueOf(user.getResetDate());
+            //LocalDate localdate = sqlDate.toLocalDate();
+           DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+           String Date = dateFormat.format(user.getResetDate());
+           Password pObject = new Password();
+           String hashedPassword = pObject.getSaltedHash(user.getPassword());
            
-            query ="INSERT INTO user (`username`, `password`, `isAdmin`,`activated`,`lastname`,`firstname`,`email`) VALUES ('"+user.getUsername()+"', '"+user.getPassword()+"', '"+user.getIsAdmin()+"','"+user.getActivated()+"','"+user.getLastname()+"','"+user.getFirstname()+"','"+user.getEmail()+"')";
-            st.executeUpdate(query);
-            System.out.println("Records from table");
-            pw.println("");
-            pw.println("================ Appointment Created ======================");
+           if(!check(user.getUsername(),user.getEmail()))
+           {
+               return false;
+           }
+           
+            query ="INSERT INTO user (`username`, `password`, `isAdmin`,`activated`,`lastname`,`firstname`,`email`,`activatedKey`,`resetKey`,`resetDate`) VALUES ('"+user.getUsername()+"', '"+hashedPassword+"', '"+myInt+"','"+myInt2+"','"+user.getLastname()+"','"+user.getFirstname()
+            +"','"+user.getEmail()+"','"+user.getActivatedKey()+"','"+user.getResetKey()+"','"+Date+"')";
+            int executeUpdate = st.executeUpdate(query);
             return true;
         }
         catch(Exception e){
             System.out.println("Erro with query: "+e);
+            return false;
+        }
+    }
+    
+    //Checks if the User exist with either the email or username
+    private Boolean check(String username, String email)
+    {
+        
+            String query ="select * from user where username ='"+username+"' OR email ='"+email+"' ";
+        try {
+            rs = st.executeQuery(query);
+            int count = 0;
+             while(rs.next()){
+                 count++;
+             }
+           if(count > 0)
+           {
+               return false;
+           }
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

@@ -110,23 +110,23 @@ public class UserRestFull {
         return isAuth;
     }
     
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/registerssuser")
-    public String registerAsUser(String json) throws JSONException{
-        //Register the user and return succes or failed
-        JSONObject jsonObj = new JSONObject(json);
-        System.out.println(jsonObj);
-        User newUser = new User(jsonObj.getString("username"),jsonObj.getString("password"),Boolean.parseBoolean(jsonObj.getString("isAdmin")),jsonObj.getString("lastname"),jsonObj.getString("firstname"),jsonObj.getString("email"));
-        Boolean success = persistUser();
-       
-        JSONObject retObj = new JSONObject();
-        retObj.put("success",success);
-       
-        return retObj.toString();
-    }
-    
+//    @PUT
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path("/registerssuser")
+//    public String registerAsUser(String json) throws JSONException{
+//        //Register the user and return succes or failed
+//        JSONObject jsonObj = new JSONObject(json);
+//        System.out.println(jsonObj);
+//        User newUser = new User(jsonObj.getString("username"),jsonObj.getString("password"),Boolean.parseBoolean(jsonObj.getString("isAdmin")),jsonObj.getString("lastname"),jsonObj.getString("firstname"),jsonObj.getString("email"));
+//        Boolean success = persistUser();
+//       
+//        JSONObject retObj = new JSONObject();
+//        retObj.put("success",success);
+//       
+//        return retObj.toString();
+//    }
+//    
 //    @PUT
 //    @Produces(MediaType.APPLICATION_JSON)
 //    @Consumes(MediaType.APPLICATION_JSON)
