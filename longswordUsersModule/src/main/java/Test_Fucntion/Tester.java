@@ -27,7 +27,8 @@ public static void main(String[] args)
 //    System.out.println("test getUser: "+val2);
     
     String val3 = manager.addUser("{'username':'Pete2','password':'301','isAdmin':'True','activated':'True','lastname':'Doe','firstname':'Joey','email':'something2@gmail.com','activated':'True','activatedKey':'key1','resetKey':'key2'}");
-    System.out.println("test getUser: "+val3);
+    String val2 = manager.grantAdminRight("Pete2");
+    System.out.println("test getUser: "+val3+val2);
     
     
 }   

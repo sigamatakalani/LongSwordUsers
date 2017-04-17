@@ -1,11 +1,5 @@
 com\mycompany\longswordusersmodule\User_Interface.class
-com\mycompany\longswordusersmodule\User_Manager.class
 services\UserRestFull.class
-Mocking\UserFacade.class
-Test_Fucntion\Tester_Init.class
 Test_Fucntion\Tester.class
-Mocking\AbstractFacade.class
 Test_Fucntion\Tester$1.class
-services\ApplicationConfig.class
-com\mycompany\longswordusersmodule\Password.class
 com\mycompany\longswordusersmodule\User.class

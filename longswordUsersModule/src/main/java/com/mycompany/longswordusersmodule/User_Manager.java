@@ -187,7 +187,13 @@ public abstract class User_Manager implements User_Interface{
         Boolean success = false;
         //code here
         
-        
+        User temp = getUserFromDb(userName);
+        if(temp == null)
+            success = false;
+        else if(temp.getIsAdmin() == true)
+            success = false;
+        else
+            temp.setIsAdmin(true);
         
         //code here
         Gson gson = new Gson();
@@ -248,18 +254,33 @@ public abstract class User_Manager implements User_Interface{
         }
     }
     
-        private User getUserFromDb(String username)
+     private User getUserFromDb(String username)
     {
         User dummyUser = null;
+        String query = "";
+        ResultSet ret;
         try{
            //sql code to return user with this username
-           dummyUser = new User();
+           query = "select * from user where username ='"+username+"'";
            
+           dummyUser = new User();
+           ret = st.executeQuery(query);
+           dummyUser.setUsername(ret.getString("username"));
+           dummyUser.setId(ret.getInt("id"));
+           dummyUser.setPassword(ret.getString("password"));
+           dummyUser.setIsAdmin(Boolean.valueOf(ret.getString("isadmin")));
+           dummyUser.setFirstname(ret.getString("firstname"));
+           dummyUser.setEmail(ret.getString("email"));
+           dummyUser.setLastname(ret.getString("lastname"));
+           dummyUser.setActivated(Boolean.valueOf(ret.getString("activated")));
+           dummyUser.setActivatedKey(ret.getString("activatedKey"));
+           dummyUser.setResetKey(ret.getString("resetKey"));
+           dummyUser.setResetDate(java.sql.Date.valueOf(ret.getString("resetDate")));
            return dummyUser;
         }
-        catch(Exception e){
-            System.out.println("Erro with query: "+e);
-            return dummyUser;
+        catch(SQLException ex){
+           Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
     
