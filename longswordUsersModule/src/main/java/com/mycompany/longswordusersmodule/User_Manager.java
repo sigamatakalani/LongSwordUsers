@@ -167,8 +167,19 @@ public abstract class User_Manager implements User_Interface{
         //remove the user from the db and return success true if the user has been succesfully removed use try try and catch
         Boolean success = false;
         //code here
-        
-        
+        User dUser = getUserFromDb(userName);
+        try{
+            String query ="DELETE * FROM users WHERE `username` = '"+dUser.getUsername()+"'"; 
+            st.executeUpdate(query);
+            System.out.println("Records from table");
+            pw.println("");
+            pw.println("================ Users Deleted ======================");
+            success = true;
+        }
+        catch(Exception em)
+        {
+            success = false;
+        }       
         
         //code here
         Gson gson = new Gson();
