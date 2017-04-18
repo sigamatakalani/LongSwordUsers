@@ -35,9 +35,12 @@ public static void main(String[] args)
 //      System.out.println("test getAdminRights: "+val5);
       
 //Test authenticate function
-    String val6 = manager.authenticateTR("{'username':'Keanen2'}","{'password':'2003'}");
-    System.out.println("test authenticate: "+val6);
+//    String val6 = manager.authenticateTR("{'username':'Keanen2'}","{'password':'2003'}");
+//    System.out.println("test authenticate: "+val6);
     
+//Test Delete project
+    String val7 = manager.testDeleteUser("{'username':'John'}");
+    System.out.println("test delete: "+val7);
 }   
     
     

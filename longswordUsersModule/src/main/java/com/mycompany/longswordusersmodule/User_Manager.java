@@ -184,19 +184,31 @@ public abstract class User_Manager implements User_Interface{
 //
     public String deleteUser(String userName){
         
-        
-        
         //remove the user from the db and return success true if the user has been succesfully removed use try try and catch
         Boolean success = false;
         //code here
-        User dUser = getUserFromDb(userName);
+        
+        
         try{
-            String query ="DELETE * FROM users WHERE `username` = '"+dUser.getUsername()+"'"; 
-            st.executeUpdate(query);
-            System.out.println("Records from table");
-            pw.println("");
-            pw.println("================ Users Deleted ======================");
-            success = true;
+            
+            JSONObject jsonObj = new JSONObject(userName);
+            String username = jsonObj.getString("username");
+            User dUser = getUserFromDb(username);
+            if(dUser == null){
+                success = false;
+            }
+            else{
+                String query ="DELETE FROM user WHERE username='"+dUser.getUsername()+"'"; 
+                int executeUpdate = st.executeUpdate(query);
+                System.out.println("update: "+executeUpdate);
+                if(executeUpdate == 0){
+                    success = false;
+                }
+                else
+                {
+                    success = true;
+                }
+            }
         }
         catch(Exception em)
         {
@@ -332,7 +344,12 @@ public abstract class User_Manager implements User_Interface{
 //            String Date = dateFormat.format(rs.getString("resetDate"));
            
            }
-           System.out.println("After: "+dummyUser.getUsername());
+           
+           if(dummyUser.getUsername() == null)
+           {
+               System.out.println("Here: "+dummyUser.getUsername());
+               return null;
+           }
            return dummyUser;
         }
         catch(SQLException ex){

@@ -44,4 +44,9 @@ public class Tester_Init extends User_Manager {
         return super.authenticate(usernameJson, passwordJson);
     }
     
+    public String testDeleteUser(String userName)
+    {
+        return super.deleteUser(userName);
+    }
+    
 }
