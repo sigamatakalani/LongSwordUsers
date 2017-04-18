@@ -98,22 +98,31 @@ public abstract class User_Manager implements User_Interface{
         Boolean auth = false;
         
       try{
-          userName = new Gson().fromJson(usernameJson, String.class);
-          password = new Gson().fromJson(passwordJson, String.class);
+         JSONObject jsonObj = new JSONObject(usernameJson);
+         userName = jsonObj.getString("username");
+         JSONObject jsonObj2 = new JSONObject(passwordJson);
+         password = jsonObj2.getString("password");
+         
           //hash the password here
            Password pObject = new Password();
-           String hashedPassword = pObject.getSaltedHash(password);
+           //String hashedPassword = pObject.getSaltedHash(password);
           
           //check if user with this username and password combo exists
            tempUser = getUserFromDb(userName);
-           if(tempUser.getPassword() == hashedPassword)
+           
+           if(tempUser == null)
            {
-               auth = true;
+               auth = false;
+           }
+           else{
+               auth =  pObject.check(password,tempUser.getPassword());
+               
            }
       
       }
       catch(Exception e)
       {
+          Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, e);
           auth = false;
       }
       
@@ -191,6 +200,7 @@ public abstract class User_Manager implements User_Interface{
         }
         catch(Exception em)
         {
+            Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, em);
             success = false;
         }       
         
