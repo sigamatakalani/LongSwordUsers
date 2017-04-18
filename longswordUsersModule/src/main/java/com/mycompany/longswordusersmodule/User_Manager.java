@@ -98,10 +98,12 @@ public abstract class User_Manager implements User_Interface{
           userName = new Gson().fromJson(usernameJson, String.class);
           password = new Gson().fromJson(passwordJson, String.class);
           //hash the password here
+           Password pObject = new Password();
+           String hashedPassword = pObject.getSaltedHash(password);
           
           //check if user with this username and password combo exists
            tempUser = getUserFromDb(userName);
-           if(tempUser.getPassword() == password)
+           if(tempUser.getPassword() == hashedPassword)
            {
                auth = true;
            }
@@ -169,6 +171,9 @@ public abstract class User_Manager implements User_Interface{
 //    
 //
     public String deleteUser(String userName){
+        
+        
+        
         //remove the user from the db and return success true if the user has been succesfully removed use try try and catch
         Boolean success = false;
         //code here
@@ -194,19 +199,39 @@ public abstract class User_Manager implements User_Interface{
     
     
     public String grantAdminRight(String userName){
-        //Modify admins rights to be an admin if successfull return success to true
+        
+         //Modify admins rights to be an admin if successfull return success to true
         Boolean success = false;
-        //code here
         
-        User temp = getUserFromDb(userName);
+        JSONObject jsonObj;
+        try {
+            jsonObj = new JSONObject(userName);
+            String username = jsonObj.getString("username");
+            
+        //code here
+        User temp = getUserFromDb(username);
         if(temp == null)
+        {
             success = false;
-        else if(temp.getIsAdmin() == true)
-            success = false;
-        else
+        }
+        else if(temp.getIsAdmin() == true){
+            success = true;
+        }
+        else{
             temp.setIsAdmin(true);
+            success = UpdateUser(temp);
+        }
+        
         
         //code here
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
+            success = false;
+        }
+        
+        
+
         Gson gson = new Gson();
         String returnString = gson.toJson(success);
         return returnString;
@@ -268,25 +293,33 @@ public abstract class User_Manager implements User_Interface{
      private User getUserFromDb(String username)
     {
         User dummyUser = null;
-        String query = "";
         ResultSet ret;
         try{
            //sql code to return user with this username
-           query = "select * from user where username ='"+username+"'";
-           
+           String query = "select * from user where username ='"+username+"'";
+           rs = st.executeQuery(query);
            dummyUser = new User();
-           ret = st.executeQuery(query);
-           dummyUser.setUsername(ret.getString("username"));
-           dummyUser.setId(ret.getInt("id"));
-           dummyUser.setPassword(ret.getString("password"));
-           dummyUser.setIsAdmin(Boolean.valueOf(ret.getString("isadmin")));
-           dummyUser.setFirstname(ret.getString("firstname"));
-           dummyUser.setEmail(ret.getString("email"));
-           dummyUser.setLastname(ret.getString("lastname"));
-           dummyUser.setActivated(Boolean.valueOf(ret.getString("activated")));
-           dummyUser.setActivatedKey(ret.getString("activatedKey"));
-           dummyUser.setResetKey(ret.getString("resetKey"));
-           dummyUser.setResetDate(java.sql.Date.valueOf(ret.getString("resetDate")));
+           System.out.println("Befaore: "+username);
+           
+           while(rs.next()){
+            dummyUser.setUsername(rs.getString("username"));
+            dummyUser.setId(rs.getInt("id"));
+            dummyUser.setPassword(rs.getString("password"));
+            dummyUser.setIsAdmin(Boolean.valueOf(rs.getString("isadmin")));
+            dummyUser.setFirstname(rs.getString("firstname"));
+            dummyUser.setEmail(rs.getString("email"));
+            dummyUser.setLastname(rs.getString("lastname"));
+            dummyUser.setActivated(Boolean.valueOf(rs.getString("activated")));
+            dummyUser.setActivatedKey(rs.getString("activatedKey"));
+            dummyUser.setResetKey(rs.getString("resetKey"));
+            dummyUser.setResetDate(rs.getDate("resetDate"));
+            
+//             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//             java.sql.Date sqlDate = java.sql.Date.valueOf(rs.getDate("resetDate")); 
+//            String Date = dateFormat.format(rs.getString("resetDate"));
+           
+           }
+           System.out.println("After: "+dummyUser.getUsername());
            return dummyUser;
         }
         catch(SQLException ex){
@@ -294,6 +327,34 @@ public abstract class User_Manager implements User_Interface{
             return null;
         }
     }
+     
+     private Boolean UpdateUser(User user)
+     {
+        try{
+            String query;
+           int myInt = (user.getIsAdmin()) ? 1 : 0;
+           int myInt2 = (user.getActivated()) ? 1 : 0;
+           //java.sql.Date date = java.sql.Date.valueOf(user.getResetDate());
+            //LocalDate localdate = sqlDate.toLocalDate();
+           DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+           String Date = dateFormat.format(user.getResetDate());
+           //Password pObject = new Password();
+           //String hashedPassword = pObject.getSaltedHash(user.getPassword());
+           
+//           query =  "UPDATE user SET username='"+user.getUsername()+"' password='"+user.getPassword()+"'  WHERE id=2";
+//            query ="UPDATE user (`username`, `password`, `isAdmin`,`activated`,`lastname`,`firstname`,`email`,`activatedKey`,`resetKey`,`resetDate`) VALUES ('"+user.getUsername()+"', '"+user.getPassword()+"', '"+myInt+"','"+myInt2+"','"+user.getLastname()+"','"+user.getFirstname()
+//            +"','"+user.getEmail()+"','"+user.getActivatedKey()+"','"+user.getResetKey()+"','"+Date+"') WHERE Id='"+user.getId()+"'";
+//            
+            query ="UPDATE user SET username = '"+user.getUsername()+"', password= '"+user.getPassword()+"', isAdmin= '"+myInt+"', activated= '"+myInt2+"', lastname= '"+user.getLastname()+"', firstname= '"+user.getFirstname()+"', email= '"+user.getEmail()+"', activatedKey= '"+user.getActivatedKey()+"', resetKey= '"+user.getResetKey()+"', resetDate= '"+Date+"' WHERE Id= "+user.getId()+" ";
+            
+            int executeUpdate = st.executeUpdate(query);
+            return true;
+        }
+        catch(Exception e){
+            System.out.println("Erro with query: "+e);
+            return false;
+        }
+     }
     
 }
 

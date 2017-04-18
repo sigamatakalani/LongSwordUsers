@@ -26,10 +26,12 @@ public static void main(String[] args)
 //    String val2 = manager.getTestUser("{username:Tk}");
 //    System.out.println("test getUser: "+val2);
     
-    String val3 = manager.addUser("{'username':'Pete2','password':'301','isAdmin':'True','activated':'True','lastname':'Doe','firstname':'Joey','email':'something2@gmail.com','activated':'True','activatedKey':'key1','resetKey':'key2'}");
-    String val2 = manager.grantAdminRight("Pete2");
-    System.out.println("test getUser: "+val3+val2);
+//    String val3 = manager.addUser("{'username':'Keanen2','password':'200','isAdmin':'False','activated':'True','lastname':'Jones2','firstname':'Blake2','email':'something3@gmail.com','activated':'True','activatedKey':'key1','resetKey':'key2'}");
+//    System.out.println("test getUser: "+val3);
     
+    //Test Grant admin writes
+    String val4 = manager.grantAdminRights("{'username':'Keanen2'}");
+    System.out.println("test getAdminRights: "+val4);
     
 }   
     

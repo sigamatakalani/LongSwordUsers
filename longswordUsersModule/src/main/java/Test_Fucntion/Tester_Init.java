@@ -32,4 +32,10 @@ public class Tester_Init extends User_Manager {
     {
         return super.registerAsUser(json);
     }
+    
+       
+    public String grantAdminRights(String name)
+    {
+        return super.grantAdminRight(name);
+    }
 }
