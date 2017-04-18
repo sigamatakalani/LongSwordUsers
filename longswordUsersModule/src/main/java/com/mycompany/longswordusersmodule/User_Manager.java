@@ -65,6 +65,9 @@ public abstract class User_Manager implements User_Interface{
             String username = jsonObj.getString("username");
             //go to databse and get the user using this username
             tempUser = getUserFromDb(username);
+            
+            //remove password from object
+            tempUser.setPassword("");
             //return the user and save the user into the tempUser Object
         }
         catch(Exception e)

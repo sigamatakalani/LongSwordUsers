@@ -38,4 +38,5 @@ public class Tester_Init extends User_Manager {
     {
         return super.grantAdminRight(name);
     }
+    
 }
