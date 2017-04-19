@@ -126,8 +126,21 @@ public abstract class User_Manager implements User_Interface{
           auth = false;
       }
       
+      String authToken ="";
+      if(auth)
+      {
+          //stert session by creating auth tocken
+          //get current time
+          DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+          java.util.Date dateobj = new java.util.Date();
+          String date =df.format(dateobj);
+          authToken = userName+"-"+date;
+          //hash the tocken
+          
+      }
+      
         Gson gson = new Gson();
-        String returnString = gson.toJson(auth);
+        String returnString = gson.toJson(authToken);
         return returnString;
     }
     
@@ -136,10 +149,50 @@ public abstract class User_Manager implements User_Interface{
      * @return
      */
 
-    public String isAuthenticated(){
+    public String isAuthenticated(String date){
         //Checks if theres still an active session if not returnes false
+        Boolean auth = false;
+        try
+        {
+            JSONObject jsonObj2 = new JSONObject(date);
+            String stringTocken = jsonObj2.getString("authToken");
+           // System.out.println("Diffrence: "+stringTocken);
+
+            if(stringTocken.equals(""))
+            {
+                auth = false;
+            }
+            else{
+                String[] data = stringTocken.split("-");
+                String usn = data[0]; 
+                String strDate = data[1];
+                java.util.Date dateOnTocken = new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse(strDate);
+                java.util.Date dateNow = new java.util.Date();
+                
+                 System.out.println("here: "+dateOnTocken);
+
+                if(dateOnTocken.getYear() == dateNow.getYear() && dateOnTocken.getMonth() == dateNow.getMonth() && dateOnTocken.getDay() == dateNow.getDay())
+                {
+                    int nowHours = dateNow.getHours();
+                    int tokenHours = dateOnTocken.getHours();
+                    
+                    int tokeDifrence =  nowHours - tokenHours;
+                    
+                    
+                    System.out.println("Diffrence: "+tokeDifrence);
+                    if((tokeDifrence >= 0 && tokeDifrence < 3)|| tokeDifrence > 21)
+                    {
+                        auth = true;
+                    }
+                }
+            }
+            
+        }
+        catch(Exception e){
+              Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, e);
+        }
         
-        Boolean auth = true;
+        
         Gson gson = new Gson();
         String returnString = gson.toJson(auth);
         return returnString;
@@ -347,7 +400,7 @@ public abstract class User_Manager implements User_Interface{
            
            if(dummyUser.getUsername() == null)
            {
-               System.out.println("Here: "+dummyUser.getUsername());
+              // System.out.println("Here: "+dummyUser.getUsername());
                return null;
            }
            return dummyUser;
