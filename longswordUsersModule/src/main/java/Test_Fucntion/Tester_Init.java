@@ -18,9 +18,9 @@ public class Tester_Init extends User_Manager {
         super();
     }
     
-    public String getAuth()
+    public String getAuth(String json)
     {
-        return super.isAuthenticated();
+        return super.isAuthenticated(json);
     }
     
     public String getTestUser(String name)
@@ -48,5 +48,7 @@ public class Tester_Init extends User_Manager {
     {
         return super.deleteUser(userName);
     }
+    
+ 
     
 }

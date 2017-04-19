@@ -12,7 +12,7 @@ import org.codehaus.jettison.json.JSONException;
 public interface User_Interface {
    public String getUser(String userName);
     public String authenticate(String userName, String password);
-    public String isAuthenticated();
+    public String isAuthenticated(String authToken);
     public String registerAsUser(String jsonUser);
     public String grantAdminRight(String userName);
     public String deleteUser(String userName);

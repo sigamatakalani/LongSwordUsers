@@ -28,10 +28,6 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
        // resources.add(WadlContextResolver.class);
-        resources.add(org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider.class);
-        resources.add(org.codehaus.jackson.jaxrs.JacksonJsonProvider.class);
-        resources.add(org.codehaus.jackson.jaxrs.JsonMappingExceptionMapper.class);
-        resources.add(org.codehaus.jackson.jaxrs.JsonParseExceptionMapper.class);
         resources.add(services.UserRestFull.class);
     }
     
