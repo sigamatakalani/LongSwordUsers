@@ -1,0 +1,83 @@
+%--------------------
+% Packages
+% -------------------
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{gentium}
+\usepackage{mathptmx} % Use Times Font
+
+
+\usepackage[pdftex]{graphicx} % Required for including pictures
+\usepackage[swedish]{babel} % Swedish translations
+\usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
+\usepackage{calc} % To reset the counter in the document after title page
+\usepackage{enumitem} % Includes lists
+
+\frenchspacing % No double spacing between sentences
+\linespread{1.2} % Set linespace
+\usepackage[a4paper, lmargin=0.1666\paperwidth, rmargin=0.1666\paperwidth, tmargin=0.1111\paperheight, bmargin=0.1111\paperheight]{geometry} %margins
+%\usepackage{parskip}
+
+\usepackage[all]{nowidow} % Tries to remove widows
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves typography, load after fontpackage is selected
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+
+%-----------------------
+% Set pdf information and add title, fill in the fields
+%-----------------------
+\hypersetup{ 	
+pdfsubject = {},
+pdftitle = {},
+pdfauthor = {}
+}
+
+%-----------------------
+% Begin document
+%-----------------------
+\begin{document} %All text i dokumentet hamnar mellan dessa taggar, allt ovanför är formatering av dokumentet
+\title{LongSword User Management Module Documentation}
+\section{Abstract}
+\paragraph{This document stipulates the implementation phase of the NavUP system - User module. Defining the management of users, in particular, the creation, update, and deletion of users.}
+
+
+
+\section{Introduction}
+\paragraph{The User management module is responsible for maintaining information about the registered users of the system, including the authority levels of each user. Administrators can manage information about venues and activities whilst users who have signed up may request services from the various modules and persist private information related to particular services.}
+
+\section{User Management Modules}
+
+\subsection{getUser Module}
+\paragraph{This module takes a username string and returns the user object with the users data}
+
+\subsection{authenticate Module}
+\paragraph{Module used to login a user. The module takes in a username and a password which is hashed first before it is used to check if it is the same as the hashed password stored in the database that coresponds to the username used. If a match is found, a session is created in the webservice and the user is logged in. The module returns true if successful and false if the user was not found in the database or if the password did not match the password stored in the database for the specified username.}
+
+\subsection{isAuthenticated Module}
+\paragraph{This module is used to check if the user is already logged in. If there is an active session that coresponds to the current user, the module returns true as a string using the gson library to change the Boolean variable into a string, else it returns false.}
+
+\subsection{registerAsUser Module}
+\paragraph{This module registers the user and persists their information in the database.It accessess the database via the jdbc Driver and updates the table of users and stores the users' information on the user table}
+
+\subsection{grantAdminRight Module}
+\paragraph{The grantAdminRight module is used to modify the administration privileges of a specific user.The user is allowed the same privilages as an admin, The user can then assign other users as admin, they can add, remove and edit tables. The module returns a boolean value as a string indicating whether the operation was a success or not, the module returns true if the user was granted admin rights or false if its unsuccessful. The module starts by accessing the database and searching for the user to see if a user with the supplied username exists, if they do, the module then checks to see if the user has already been granted admin rights, if so the module returns true and does not make any changes. If the User has not yet been assigned any admin rights, the user is then assigned user admin rights by setting the isAdmin value to true and then the module returns true to indicate that it was successful. If the user was not found in the database, the module returns false to indicate that it was unsuccessful.}
+
+\subsection{deleteUser Module}
+\paragraph{Removes the user from the database and returns true or false as a string using the gson library to change the Boolean variable into a string. The module first searches for the user in the database to see if the user exists in the database, if the user is found, the users information is removed from the database and the module returns true. If the user is not found, an exception is thrown and the user returns false.}
+
+\section{Helper Modules}
+
+\subsection{persistUser Module}
+\paragraph{Used to persist user information in the database.}
+
+\subsection{check Module}
+\paragraph{checks if the user exists in the database using their email address and their username}
+
+\subsection{getUserFromDb Module}
+\paragraph{searches the database for a user using their username, if the user is found in the database, the module returns all the users information as a User object.}
+
+\subsection{updateUser Module}
+\paragraph{Used to update the users information in the database.}
+\end{document}
