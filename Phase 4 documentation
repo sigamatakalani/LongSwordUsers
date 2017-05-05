@@ -1,0 +1,348 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\newcommand*{\titleGP}{\begingroup
+\centering 
+\vspace*{\baselineskip}
+
+\rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt}
+\rule{\textwidth}{0.4pt}\\[\baselineskip]
+
+{\LARGE NavUP\\ [0.3\baselineskip] Testing Documentation for NavUP - Users Module } \\ [0.2\baselineskip]
+\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+\rule{\textwidth}{1.6pt}\\[\baselineskip] %
+
+% \scshape %
+% A concise specification on the functional requirements  \\
+% and use cases of NavUP \\[\baselineskip]
+
+% \vspace*{2\baselineskip}
+
+Compiled By \\[\baselineskip]
+{\Large  Mathapelo Matabane - u12206522 \\ Takalani Sigama - u14166365\\ Melvin Zitha - u12138747\par} 
+
+\vfill
+
+{\scshape 2017} \\[0.3\baselineskip]
+{\large Longsword Users Team}\par
+
+\endgroup}
+
+\begin{document}
+
+
+\titleGP
+
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+\subsection{Purpose}
+\subsection{Scope}
+\newpage
+\section{Test Model}
+\newpage
+\section{Test Cases}
+\subsection{Service Contracts}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 1 & Test Case Name: Insert(User user) \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Inserts a user object into the database}\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): All user details must be provided } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid details exception  } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Return: success variable } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User should be successfully persisted to the db } \\
+   \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Insert with valid Data  & insert of user successful
+  & Pass &  \\
+  \hline
+    2
+  & Insert with some missing data  & insert null value
+  & Fail &  \\
+  \hline
+    3
+  & Insert with existing student number  & print out “Student number already exists!”
+  & Pass &  \\
+  \hline\hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Success } & {Score: 6.7} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 2 & Test Case Name: Update(User user) \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Update a user object in the database }\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist, User must be logged on } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid details exception. Invalid User exception. User not logged in exception   } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Return: success variable } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Post-conditon(S): User details successfully updated } \\
+  \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Update user details  & Valid Updated Data 
+  & Pass & Updated data is valid \\
+  \hline
+  \hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Success } & {Score: 10} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 3 & Test Case Name: Delete(String studentNumber) \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Delete a user in the database using their student number }\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist, Operator must be logged on } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid details exception, Invalid User exception, Operator not logged in exception  } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Return: success variable } \\
+  \hline
+    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User details successfully deleted } \\
+  \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Delete valid user  & successful deletion
+  & Pass &  \\
+  \hline
+    2
+  & Pass in invalid details  & invalid details exception
+  & Fail & exception thrown was not caught \\
+  \hline
+    3
+  & Check if operator is logged in  & 
+  & Fail & No check \\
+  \hline\hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 3.3} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 4 & Test Case Name: Read() \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Get the list of all users from the database }\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must be logged in and must be an admin } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): No data exception, Operator not logged in exception  } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Return: User List } \\
+  \hline
+    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User List is returned. } \\
+  \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Request list   & 
+  & Pass &  \\
+  \hline
+    2
+  & Request with invalid user  & Operator not logged in exception
+  & Fail & Operator not logged in but systems still returns list \\
+  \hline
+    3
+  & Request list as user  & throw exception
+  & Fail & Logged in user not admin but still returns list \\
+  \hline\hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 3.3} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 5 & Test Case Name: Getuser(String student number) \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Get user using student number from the database }\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must be logged in and must be an admin } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): No data exception, Operator not logged in exception  } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Return: User List } \\
+  \hline
+    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User List is returned. } \\
+  \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Request list   & 
+  & Pass &  \\
+  \hline
+    2
+  & Request with invalid user  & Operator not logged in exception
+  & Fail & Operator not logged in but systems still returns list \\
+  \hline
+    3
+  & Request list as user  & throw exception
+  & Fail & Logged in user not admin but still returns list \\
+  \hline\hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 3.3} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 6 & Test Case Name: makeAdmin(String userName) \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Function to set user privileges to admin }\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist in the database ,operator must be logged in and must be an admin } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid User exception, Operator previlage exception, Operator not logged in exception.  } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Return: return success } \\
+  \hline
+    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User previlage is changed to admin. } \\
+  \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Change valid user credentials   & 
+  & Pass & returns success \\
+  \hline
+    2
+  & Enter invalid user  & throw exception
+  & Pass & returns user does not exist \\
+  \hline
+    3
+  & Operator is admin  & throw exception
+  & Pass & returns success \\
+  \hline
+  	4
+    & Operator is not admin & exception
+    & Fail & Still returns success \\
+  \hline\hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 2.5} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\hline
+Test Case: Service contract 7 & Test Case Name: Login(String username, String Password) \\
+\hline
+\multicolumn{2}{|p{\textwidth}| }{Description: Function to authenticate user into the system }\\
+\hline
+\end{tabular}
+\end{flushleft}
+\begin{flushleft}
+\begin{tabular}
+{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist in the database ,operator password must match stored password } \\
+  \hline
+   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid User exception, Invalid user exception  } \\
+  \hline
+  \multicolumn{4}{|p{\textwidth}|}{Return: return success } \\
+  \hline
+    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User is authenticated. } \\
+  \hline
+  \hline
+  Step & Action & Expected System Response & Pass/Fail & Comment \\
+   \hline
+    1
+  & Authenticate user credentials   & 
+  & Pass & returns success \\
+  \hline
+    2
+  & Enter invalid user  & Fail login
+  & Pass & login failed \\
+  \hline
+    3
+  & Enter incorrect password  & Fail login
+  & Pass & login failed \\
+  \hline
+  	\hline
+   \multicolumn{2}{|p{\textwidth}|}{Result: Success } & {Score: 10} \\
+   \hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\newpage
+\subsection{Non-functional requirements}
+\newpage
+\subsection{Own define non-functional requirements}
+
+\end{document}
