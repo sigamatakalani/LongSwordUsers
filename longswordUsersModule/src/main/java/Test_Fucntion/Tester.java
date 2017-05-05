@@ -19,27 +19,36 @@ public static void main(String[] args)
 {       
     System.out.println("Start");
     Tester_Init manager = new Tester_Init(){};
-    //User temp = new User("Tk","1234",true,"Sigama","Takalani","sig@gmail.com");        
-//    String val =  manager.getAuth();
-//    System.out.println("added: "+val);
+
+    System.out.println("--------------------------------------------------------------------------------------------------");
+    System.out.println("Test add user functionality");
+    System.out.println("Adding user: username: John, password: 1234, isAdmin: False, activated: False, lastname: Doe, firstname: Peter, email: johnsemail@gmail.com, activated:True, activatedKey: key1 ,resetKey: key2");
+      String val3 = manager.addUser("{'username':'John','password':'1234','isAdmin':'False','activated':'False','lastname':'Doe','firstname':'Peter','email':'johnsemail@gmail.com','activated':'True','activatedKey':'key1','resetKey':'key2'}");
+      System.out.println("test getUser: "+val3);
+     
+    System.out.println("");      
+    System.out.println("--------------------------------------------------------------------------------------------------");
+    System.out.println("Test Grant admin rightes");    
+    String val4 = manager.grantAdminRights("{'username':'John'}");
+    System.out.println("test getAdminRights: "+val4);
+     
+    System.out.println("");
+    System.out.println("--------------------------------------------------------------------------------------------------");
+    System.out.println("Test get user functionality");
+    String val5 = manager.getTestUser("{'username':'John'}");
+    System.out.println("returned user: "+val5);
     
-//    String val3 = manager.addUser("{'username':'Keanen2','password':'200','isAdmin':'False','activated':'False','lastname':'Jones2','firstname':'Blake2','email':'something3@gmail.com','activated':'True','activatedKey':'key1','resetKey':'key2'}");
-//    System.out.println("test getUser: "+val3);
-    
-    //Test Grant admin writes
-//    String val4 = manager.grantAdminRights("{'username':'Keanen2'}");
-//    System.out.println("test getAdminRights: "+val4);
-    
-//Test getUser
-//      String val5 = manager.getTestUser("{'username':'Keanen2'}");
-//      System.out.println("test getAdminRights: "+val5);
-      
 //Test authenticate function
-    String val6 = manager.authenticateTR("{'username':'Keanen2'}","{'password':'200'}");
+    System.out.println("");
+    System.out.println("--------------------------------------------------------------------------------------------------");
+    String val6 = manager.authenticateTR("{'username':'John'}","{'password':'1234'}");
     System.out.println("test authenticate: "+val6);
     
-    //Test authenticate function
-    String val8 = manager.getAuth("{'authToken':'Keanen2-19/04/17 16:02:25'}");
+    //Test authenticated function
+    System.out.println("");
+    System.out.println("--------------------------------------------------------------------------------------------------");
+    //Test authenticated function
+    String val8 = manager.getAuth("{'authToken':'"+val6+"'}");
     System.out.println("test authenticated: "+val8);
     
 //Test Delete project

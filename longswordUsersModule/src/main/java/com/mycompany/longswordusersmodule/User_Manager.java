@@ -38,16 +38,10 @@ public abstract class User_Manager implements User_Interface{
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/longswordusermanager","root","");
             st= con.createStatement();
         }catch(Exception e){
-            System.out.println("Erro: "+e);
+          //  System.out.println("Erro: "+e);
         }
     }
     
-    
-  
-    public List<User> findAll(){
-        List<User> newList = uFacade.getAll();
-        return newList;
-    }
 
     //Required functions
 
@@ -72,7 +66,7 @@ public abstract class User_Manager implements User_Interface{
         }
         catch(Exception e)
         {
-            System.out.println(e);
+       //     System.out.println(e);
         }
         
         Gson gson = new Gson();
@@ -122,7 +116,7 @@ public abstract class User_Manager implements User_Interface{
       }
       catch(Exception e)
       {
-          Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, e);
+        //  Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, e);
           auth = false;
       }
       
@@ -134,7 +128,7 @@ public abstract class User_Manager implements User_Interface{
           DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
           java.util.Date dateobj = new java.util.Date();
           String date =df.format(dateobj);
-          authToken = userName+"-"+date;
+          authToken = tempUser.getUsername()+"-"+date;
           //hash the tocken
           
       }
@@ -149,12 +143,12 @@ public abstract class User_Manager implements User_Interface{
      * @return
      */
 
-    public String isAuthenticated(String date){
+    public String isAuthenticated(String tockenJson){
         //Checks if theres still an active session if not returnes false
         Boolean auth = false;
         try
         {
-            JSONObject jsonObj2 = new JSONObject(date);
+            JSONObject jsonObj2 = new JSONObject(tockenJson);
             String stringTocken = jsonObj2.getString("authToken");
            // System.out.println("Diffrence: "+stringTocken);
 
@@ -169,7 +163,7 @@ public abstract class User_Manager implements User_Interface{
                 java.util.Date dateOnTocken = new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse(strDate);
                 java.util.Date dateNow = new java.util.Date();
                 
-                 System.out.println("here: "+dateOnTocken);
+              //   System.out.println("here: "+dateOnTocken);
 
                 if(dateOnTocken.getYear() == dateNow.getYear() && dateOnTocken.getMonth() == dateNow.getMonth() && dateOnTocken.getDay() == dateNow.getDay())
                 {
@@ -179,7 +173,7 @@ public abstract class User_Manager implements User_Interface{
                     int tokeDifrence =  nowHours - tokenHours;
                     
                     
-                    System.out.println("Diffrence: "+tokeDifrence);
+                //    System.out.println("Diffrence: "+tokeDifrence);
                     if((tokeDifrence >= 0 && tokeDifrence < 3)|| tokeDifrence > 21)
                     {
                         auth = true;
@@ -189,7 +183,8 @@ public abstract class User_Manager implements User_Interface{
             
         }
         catch(Exception e){
-              Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, e);
+          //   Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, e);
+               auth = false;
         }
         
         
@@ -253,7 +248,7 @@ public abstract class User_Manager implements User_Interface{
             else{
                 String query ="DELETE FROM user WHERE username='"+dUser.getUsername()+"'"; 
                 int executeUpdate = st.executeUpdate(query);
-                System.out.println("update: "+executeUpdate);
+          //      System.out.println("update: "+executeUpdate);
                 if(executeUpdate == 0){
                     success = false;
                 }
@@ -265,7 +260,7 @@ public abstract class User_Manager implements User_Interface{
         }
         catch(Exception em)
         {
-            Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, em);
+          //  Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, em);
             success = false;
         }       
         
@@ -304,7 +299,7 @@ public abstract class User_Manager implements User_Interface{
         //code here
             
         } catch (JSONException ex) {
-            Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
+         //   Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
             success = false;
         }
         
@@ -319,7 +314,6 @@ public abstract class User_Manager implements User_Interface{
     private Boolean persistUser(User user)
     {
         try{
-            this.pw=pw;
             String query;
            int myInt = (user.getIsAdmin()) ? 1 : 0;
            int myInt2 = (user.getActivated()) ? 1 : 0;
@@ -341,7 +335,7 @@ public abstract class User_Manager implements User_Interface{
             return true;
         }
         catch(Exception e){
-            System.out.println("Erro with query: "+e);
+         //   System.out.println("Erro with query: "+e);
             return false;
         }
     }
@@ -363,7 +357,7 @@ public abstract class User_Manager implements User_Interface{
            }
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
+        //    Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -377,7 +371,7 @@ public abstract class User_Manager implements User_Interface{
            String query = "select * from user where username ='"+username+"'";
            rs = st.executeQuery(query);
            dummyUser = new User();
-           System.out.println("Befaore: "+username);
+        //   System.out.println("Befaore: "+username);
            
            while(rs.next()){
             dummyUser.setUsername(rs.getString("username"));
@@ -406,7 +400,7 @@ public abstract class User_Manager implements User_Interface{
            return dummyUser;
         }
         catch(SQLException ex){
-           Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
+        //   Logger.getLogger(User_Manager.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -434,7 +428,7 @@ public abstract class User_Manager implements User_Interface{
             return true;
         }
         catch(Exception e){
-            System.out.println("Erro with query: "+e);
+         //   System.out.println("Erro with query: "+e);
             return false;
         }
      }
