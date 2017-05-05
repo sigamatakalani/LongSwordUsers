@@ -1,6 +1,10 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{multirow}
+\graphicspath{ {testing/services/} }
+\usepackage{float}
+
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -11,7 +15,6 @@
 
 \rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt}
 \rule{\textwidth}{0.4pt}\\[\baselineskip]
-
 {\LARGE NavUP\\ [0.3\baselineskip] Testing Documentation for NavUP - Users Module } \\ [0.2\baselineskip]
 \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt}
 \rule{\textwidth}{1.6pt}\\[\baselineskip] %
@@ -42,307 +45,532 @@ Compiled By \\[\baselineskip]
 \newpage
 \section{Introduction}
 \subsection{Purpose}
+\paragraph{This test report describes the testing approach and overall framework that will drive the testing of the Broadsword User Management Module}
 \subsection{Scope}
+\paragraph{The user management module is responsible for maintaining information about the registered users of the system, including rhe authority levels of each user. Administrators can manage information about venues and activities whilst users who have signed up may request services from the various modules and persist private information related to particular services.}
 \newpage
 \section{Test Model}
+\subsection{Supporting Broadsword's User Management Module testing with Test Model}
+\paragraph{This section discusses the approach used for the validation of the Broadsword team’s User Module. We use UML diagrams to describe the relationship between the diverse use cases specified for the system and the actors interacting with the system in accordance with these use cases. UML activity diagrams are used to model the logic captured by individual use cases and provide the basis for testing the functionalities and business rules described by the use cases covering the core functionalities and the innovations implemented.}
+\subsection{Test Model using UML Activity Diagrams}
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.4\textwidth]{emailvalidation}
+    \caption{AddUser module validation using email}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.4\textwidth]{deleteActivity}
+    \caption{Validation of the deleteUser method}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.5\textwidth]{loginvalidate}
+    \caption{Validation of the login method}
+\end{figure}
+
 \newpage
 \section{Test Cases}
+
 \subsection{Service Contracts}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\subsubsection{Insert User}
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
 \hline
-Test Case: Service contract 1 & Test Case Name: Insert(User user) \\
+Input Element & Type & Value Specification & Valid & Invalid \\
 \hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Inserts a user object into the database}\\
+ Student Number & String & Length must be between 10 character & Satisfies value specification and does not match any values ion the database  & Does not satisfy the specification.   \\
+ \hline
+ Name  & String & Length must be less than 20 characters & Satisfies value specification  & Does not satisfy the specification. \\
+ \hline
+ Surname & String & Length must be less than 20 characters & Satisfies value specification and does not match any values ion the database  & Does not satisfy the specification.   \\
+ \hline
+ Password & String & Length must be between 8 and 20, contain at least one alphabet and numeric character & Satisfies value specification and does not match any values ion the database  & Does not satisfy the specification.   \\
+ \hline
+ email & String & Must be a valid email address & Satisfies value specification & Does not satisfy the specification.   \\
+ \hline
+ phone & String & Must be a ten digit number & Satisfies value specification & Does not satisfy the specification \\
 \hline
 \end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): All user details must be provided } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid details exception  } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Return: success variable } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User should be successfully persisted to the db } \\
-   \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Insert with valid Data  & insert of user successful
-  & Pass &  \\
-  \hline
-    2
-  & Insert with some missing data  & insert null value
-  & Fail &  \\
-  \hline
-    3
-  & Insert with existing student number  & print out “Student number already exists!”
-  & Pass &  \\
-  \hline\hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Success } & {Score: 6.7} \\
-   \hline
+\caption{\label{tab:widgets} Identifying input values for use case-base testing.}
+\end{table}
+\newpage
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & Student Number & Operator is Logged in & Expected Outcome \\
+\hline
+1 & Exists & True & Return User Object \\
+\hline
+2 &	Exists	& False & 	Return error message \\
+\hline
+3 &	Does no Exist &	True &	Return error message \\
+\hline
 \end{tabular}
-\end{flushleft}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
 \pagebreak
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
-\hline
-Test Case: Service contract 2 & Test Case Name: Update(User user) \\
-\hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Update a user object in the database }\\
-\hline
-\end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist, User must be logged on } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid details exception. Invalid User exception. User not logged in exception   } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Return: success variable } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Post-conditon(S): User details successfully updated } \\
-  \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Update user details  & Valid Updated Data 
-  & Pass & Updated data is valid \\
-  \hline
-  \hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Success } & {Score: 10} \\
-   \hline
-\end{tabular}
-\end{flushleft}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=1\textwidth]{InsertUSERservice1}
+    \caption{Insert User Service}
+\end{figure}
+
+
 \pagebreak
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+\begin{table}
+\begin{tabular}{|p{0.1\textwidth}| p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}| p{0.1\textwidth}| p{0.1\textwidth}|p{0.1\textwidth}| }
 \hline
-Test Case: Service contract 3 & Test Case Name: Delete(String studentNumber) \\
+Test Case &	Student Number &	Name &	Surname	& Password &	email &	Phone &	Expected Outcome \\
 \hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Delete a user in the database using their student number }\\
+1 &	Valid & Valid &	Valid &	Valid &	Valid	& Valid &	Success \\
+\hline
+2 &	Valid &	Invalid &	Valid &	Valid &	Valid &	Valid &	Return error message \\
+\hline 
+3 &  Valid &Valid &	Invalid &	Valid &	Valid &	Valid &	Return error message \\
+\hline
+4 &	Valid &	Valid & Valid &	Invalid &	Valid &	Valid &	Return error message \\
+\hline
+5 &	Valid &	Valid &	Valid &	Valid &	Invalid &	Valid &	Return error message \\
+\hline
+6 &	Valid &	Valid &	Valid &	Valid &	Valid &	Invalid &	Return error message \\
+\hline
+7 &	Invalid &	Valid &	Valid &	Valid &	Valid &	Valid &	Return error message \\
 \hline
 \end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist, Operator must be logged on } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid details exception, Invalid User exception, Operator not logged in exception  } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Return: success variable } \\
-  \hline
-    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User details successfully deleted } \\
-  \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Delete valid user  & successful deletion
-  & Pass &  \\
-  \hline
-    2
-  & Pass in invalid details  & invalid details exception
-  & Fail & exception thrown was not caught \\
-  \hline
-    3
-  & Check if operator is logged in  & 
-  & Fail & No check \\
-  \hline\hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 3.3} \\
-   \hline
-\end{tabular}
-\end{flushleft}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
+
 \pagebreak
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
 \hline
-Test Case: Service contract 4 & Test Case Name: Read() \\
+Test Case & Student Number & Name & Surname & Password & email & Phone & Expected Outcome & Returned Output \\
 \hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Get the list of all users from the database }\\
+1& “u14166365”& “Takalani” & “Sigama” &	“1234tkryo” & “tk23@gmail.com” & “0782345612” &	Success & Success \\
+\hline
+2 &	“u15166367” &“sb hfdsf048888533458793573-|||\\9054=0350” &	“Sigama1” &	“1234tkryo” &	“taki2@gmail.com” &	Valid &	Return error message &	Success \\
+\hline 
+3 &	“u16166365” &	“Takalani1” & “sbhfdsf04888853
+3458793573-|||\\9054=0350” &	“1234tkryo” &	“taki5@gmail.com” &	Valid &	Return error message &	Return error message
+ \\
+\hline
+4 &	“u34166365” &	“Takalani2” &	“Sigama1” &	“” &	Taki6@gmail.com” &	Valid &	Return error message &	Success \\
+\hline
+5 &	“u19166365” &	“Takalani3” &	“Sigama2” &	“1234tkryo” &	“gmail.com” &	Valid &	Return error message &	Success \\
+\hline
+6 &	“u17166365” &	“Takalani4” &	“Sigama3” &	“1234tkryo” &	“taki9@gmail.com” &	Invalid &	Return error message &	Success \\
+\hline
+7 &	“” & “Takalani5” &	“Sigama4” &	“1234tkryo” &	taki267@gmail.com” &	Valid &	Return error message &	Success
+\\
 \hline
 \end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must be logged in and must be an admin } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): No data exception, Operator not logged in exception  } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Return: User List } \\
-  \hline
-    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User List is returned. } \\
-  \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Request list   & 
-  & Pass &  \\
-  \hline
-    2
-  & Request with invalid user  & Operator not logged in exception
-  & Fail & Operator not logged in but systems still returns list \\
-  \hline
-    3
-  & Request list as user  & throw exception
-  & Fail & Logged in user not admin but still returns list \\
-  \hline\hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 3.3} \\
-   \hline
-\end{tabular}
-\end{flushleft}
+\caption{\label{tab:widgets} Use case-based test for Insert User function }
+\end{table}
+
+Overall Score :  2.5
+Insert user functions successfully but there is very poor serverside validation thus might pose very high security risks, and insertion of invalid information into the database.
+
+\newpage
+\subsubsection{Update User}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=1\textwidth]{Updateservice2}
+    \caption{Update User Service}
+\end{figure}
 \pagebreak
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
 \hline
-Test Case: Service contract 5 & Test Case Name: Getuser(String student number) \\
+Input Element & Type & Value Specification & Valid & Invalid \\
 \hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Get user using student number from the database }\\
+ Name  & String & Length must be less than 20 characters & Satisfies value specification  & Does not satisfy the specification. \\
+ \hline
+ Surname & String & Length must be less than 20 characters & Satisfies value specification and does not match any values ion the database  & Does not satisfy the specification.   \\
+ \hline
+ Password & String & Length must be between 8 and 20, contain at least one alphabet and numeric character & Satisfies value specification and does not match any values ion the database  & Does not satisfy the specification.   \\
+ \hline
+ email & String & Must be a valid email address & Satisfies value specification & Does not satisfy the specification.   \\
+ \hline
+ phone & String & Must be a ten digit number & Satisfies value specification & Does not satisfy the specification \\
 \hline
 \end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must be logged in and must be an admin } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): No data exception, Operator not logged in exception  } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Return: User List } \\
-  \hline
-    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User List is returned. } \\
-  \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Request list   & 
-  & Pass &  \\
-  \hline
-    2
-  & Request with invalid user  & Operator not logged in exception
-  & Fail & Operator not logged in but systems still returns list \\
-  \hline
-    3
-  & Request list as user  & throw exception
-  & Fail & Logged in user not admin but still returns list \\
-  \hline\hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 3.3} \\
-   \hline
-\end{tabular}
-\end{flushleft}
+\caption{\label{tab:widgets} Identifying input values for use case-base testing.}
+\end{table}
+
 \pagebreak
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}| }
 \hline
-Test Case: Service contract 6 & Test Case Name: makeAdmin(String userName) \\
+Test Case & Name &	Surname	& Password & email & Phone & Expected Outcome \\
 \hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Function to set user privileges to admin }\\
+1 & Valid &	Valid &	Valid &	Valid	& Valid &	Success \\
+\hline
+2 &	Invalid & Valid &	Valid &	Valid &	Valid &	Return error message \\
+\hline 
+3 &  Valid & Invalid &	Valid &	Valid &	Valid &	Return error message \\
+\hline
+4 &	Valid &	Valid & Invalid & Valid & Valid &	Return error message \\
+\hline
+5 &	Valid &	Valid &	Valid &	Invalid &	Valid &	Return error message \\
+\hline
+6 &	Valid &	Valid &	Valid &	Valid &	Invalid &	Return error message \\
+\hline
+7 &	Valid &	Valid &	Valid &	Valid &	Valid &	Return error message \\
 \hline
 \end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist in the database ,operator must be logged in and must be an admin } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid User exception, Operator previlage exception, Operator not logged in exception.  } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Return: return success } \\
-  \hline
-    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User previlage is changed to admin. } \\
-  \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Change valid user credentials   & 
-  & Pass & returns success \\
-  \hline
-    2
-  & Enter invalid user  & throw exception
-  & Pass & returns user does not exist \\
-  \hline
-    3
-  & Operator is admin  & throw exception
-  & Pass & returns success \\
-  \hline
-  	4
-    & Operator is not admin & exception
-    & Fail & Still returns success \\
-  \hline\hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Fail } & {Score: 2.5} \\
-   \hline
-\end{tabular}
-\end{flushleft}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
 \pagebreak
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.2\textwidth}|p{0.5\textwidth}| }
+
+\begin{table}
+\begin{tabular}{|p{0.4\textwidth}| p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}| p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}| }
 \hline
-Test Case: Service contract 7 & Test Case Name: Login(String username, String Password) \\
+Test Case & Name & Surname & Password & email & Phone & Expected Outcome & Returned Output \\
 \hline
-\multicolumn{2}{|p{\textwidth}| }{Description: Function to authenticate user into the system }\\
+1&  “Takalani” & “Sigama” &	“1234tkryo” & “tk23@gmail.com” & “0782345612” &	Success & Success \\
+\hline
+2 &	“sb hfdsf048888533458793573-|||\\9054=0350” &	“Sigama1” &	“1234tkryo” &	“taki2@gmail.com” &	Valid &	Return error message &	Success \\
+\hline 
+3 &	“Takalani1” & “sbhfdsf048888533458793573-|||\\9054=0350” &	“1234tkryo” &	“taki5@gmail.com” &	Valid &	Return error message &	Success
+ \\
+\hline
+4&	“Takalani2” &	“Sigama1” &	“” &	Taki6@gmail.com” &	Valid &	Return error message &	Success \\
+\hline
+5 &	“Takalani3” &	“Sigama2” &	“1234tkryo” &	“gmail.com” &	Valid &	Return error message &	Success \\
+\hline
+6 &	“Takalani4” &	“Sigama3” &	“1234tkryo” &	“taki9@gmail.com” &	Invalid &	Return error message &	Success \\
+\hline
+7 & “Takalani5” & “Sigama4” &	“1234tkryo” &	taki267@gmail.com” &	Valid &	Return error message &	Success
+\\
 \hline
 \end{tabular}
-\end{flushleft}
-\begin{flushleft}
-\begin{tabular}
-{ |p{0.1\textwidth}|p{0.5\textwidth}| p{0.5\textwidth}| p{0.5\textwidth}|p{0.5\textwidth}| }
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Pre-condition(s): User must exist in the database ,operator password must match stored password } \\
-  \hline
-   \multicolumn{4}{|p{\textwidth}|}{Exception(s): Invalid User exception, Invalid user exception  } \\
-  \hline
-  \multicolumn{4}{|p{\textwidth}|}{Return: return success } \\
-  \hline
-    \multicolumn{4}{|p{\textwidth}|}{Post-condition(s): User is authenticated. } \\
-  \hline
-  \hline
-  Step & Action & Expected System Response & Pass/Fail & Comment \\
-   \hline
-    1
-  & Authenticate user credentials   & 
-  & Pass & returns success \\
-  \hline
-    2
-  & Enter invalid user  & Fail login
-  & Pass & login failed \\
-  \hline
-    3
-  & Enter incorrect password  & Fail login
-  & Pass & login failed \\
-  \hline
-  	\hline
-   \multicolumn{2}{|p{\textwidth}|}{Result: Success } & {Score: 10} \\
-   \hline
-\end{tabular}
-\end{flushleft}
+\caption{\label{tab:widgets} Use case-based test for Update User function }
+\end{table}
+
+Overall Score :  2.5
+Just like in insert is very poor server side validation thus might pose very high security risks, and updating of invalid information into the database.
+
+
+\newpage
+\subsubsection{Delete User}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=1\textwidth]{DeleteUserService}
+    \caption{Delete User Service}
+\end{figure}
 \pagebreak
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Input Element & Type & Value Specification & Valid & Invalid \\
+\hline
+ Student Number  & String & User must exist in the database & Satisfies value specification and the operator changing the user authentication is logged in and is admin & Does not satisfy value, Specification, User does not exist in the system, operator is not logged in 
+Or is not admin.  \\
+ \hline
+\end{tabular}
+\caption{\label{tab:widgets} Identifying input values for use case-base testing.}
+\end{table}
+
+\pagebreak
+\begin{table}
+\begin{tabular}{ |p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}| }
+\hline
+Test Case & Student Number & Operator is Logged In & Expected Outcome \\
+\hline
+1 & Exists & True & Return success string \\
+\hline
+2 & Does not exist & False &  Return error message \\
+\hline
+2 & Exists & True &  Return error message \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
+
+\begin{table}
+\begin{tabular}{|p{0.4\textwidth}| p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}|p{0.4\textwidth}| }
+\hline
+Test Case & Student Number & Operator is Logged in & Expected Outcome & Returned Output \\
+\hline
+1& “u14166365” & True &	Return success string & Success \\
+\hline 
+2 & “u98000322” & True & Return error message & Return error message \\
+\hline
+3 & “u14166365” & False & Return error message & Success \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Use case-based test for Delete user function }
+\end{table}
+\pagebreak
+Overall Score :  7.5
+The delete service operation deletes users from the database but does not check if the operator deleting the user is logged into the system and or is a system administrator that has delete privileges thus this causes a security vulnerability in the system when cross site scripting is done.  
+
+
+\newpage
+
+
+\subsubsection{Read Function}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=1\textwidth]{readUsers}
+    \caption{Read Users Service}
+\end{figure}
+
+Takes in no input
+
+\begin{table}
+\begin{tabular}{ |p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & Operator is Logged In & Expected Outcome \\
+\hline
+1 & True & Return User object \\
+\hline
+2 & False &  Return error message \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
+\pagebreak
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & Operator is Logged in & Expected Outcome & Returned Output \\
+\hline
+1& True &	Return User Object & User List \\
+\hline 
+2 &	False & Return error message & User List \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Use case-based test for Read function }
+\end{table}
+\pagebreak
+Overall Score :  5
+No login checks are done server side to check if the operator requesting the user list is actually logged in, this is a security vulnerability and is therefore a critical error.
+
+
+\pagebreak
+
+\subsubsection{ Get user }
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=1\textwidth]{get_UserService}
+    \caption{Get User Service}
+\end{figure}
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Input Element & Type & Value Specification & Valid & Invalid \\
+\hline
+ Student Number & String & User must exist in the database,Operator must be logged in and must be an admin & Satisfies value specification and User exists in the database & Does not satisfy the specification.  \\
+ \hline
+\end{tabular}
+\caption{\label{tab:widgets} Identifying input values for use case-base testing.}
+
+\pagebreak
+
+%\begin{table}
+%\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+%\hline
+%Test Case & Student Number & Operator is Logged In & Expected Outcome \\
+%\hline
+%1 & Exists & True & Return User object \\
+%\hline
+%2 &	Exists & False &  Return error message \\
+%\hline
+%3 &	Does not exist & True & Return error message \\
+%\hline
+%\end{tabular}
+%\caption{\label{tab:widgets} Test case generation }
+%\end{table}
+\pagebreak
+
+%\begin{table}
+%\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+%\hline
+%Test Case & Username & Operator is Logged in & Expected Outcome & Returned Output \\
+%\hline
+%1& “u14567394” & True &	Return User Object & User Object \\
+%\hline 
+%3 &	“u14567394” & False & Return error message & User Object \\
+%\hline
+%4 &	“y15628292” & True & Return error message & Return error message \\
+%\hline
+%\end{tabular}
+%\caption{\label{tab:widgets} Use case-based test for Get User function }
+%\end{table}
+
+Overall Score :  7.5
+Get user service functions successfully and returns the desired object when found, but security improvements can be implemented on this service.
+
+
+\newpage
+\subsubsection{Make admin}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.5\textwidth]{make_admin2}
+    \caption{Make Admin Service}
+\end{figure}
+\pagebreak
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Input Element & Type & Value Specification & Valid & Invalid \\
+\hline
+ Username & String & User must exist in the database & Satisfies value specification and the operator changing the user authentication is logged in and is admin  & Does not satisfy value, Specification, User does not exist in the system, operator is not logged in or is not admin.   \\
+ \hline
+\end{tabular}
+\caption{\label{tab:widgets} Identifying input values for use case-base testing.}
+\end{table}
+
+\pagebreak
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & UserName & Operator is Logged In & Expected Outcome \\
+\hline
+1 & Valid & True & Return success string \\
+\hline
+2 &	Valid & False &  Return error message \\
+\hline
+3 &	Invalid & True & Return error message \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
+\newpage
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & Username & Operator is Logged in & Expected Outcome & Returned Output \\
+\hline
+1& “Peter”& True &	Return success string & Success \\
+\hline
+2 &	“Peter890” & True &	Return error message &	Login Failed  \\
+\hline 
+3 &	“Peter” & False & Return error message & Success \\
+\hline
+4 &	“Peterinv” & False & Return error message & Success \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Use case-based test for Make Admin function }
+\end{table}
+Overall Score :  7.5
+Service operates functionally but because there’s no session management test cases were the operator needs to be logged in fail. 
+
+
+
+\subsubsection{Log in}
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.5\textwidth]{log_inService}
+    \caption{Login Service}
+\end{figure}
+\pagebreak
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Input Element & Type & Value Specification & Valid & Invalid \\
+\hline
+ Username & String & Length must be between 8 and 20 character & Satisfies value specification and is not used by another user  & Does not satisfy value, Specification , User does not exist in the system \\
+ \hline
+ Password  & String & Length must be between 8 and 20, contain at least one alphabet and numeric character & Satisfies the password rule on the left  & Password does not satisfy the password rule \\
+ \hline
+\end{tabular}
+\caption{\label{tab:widgets} Identifying input values for use case-base testing.}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & UserName & Password & Expected Outcome \\
+\hline
+1 & Valid & Valid & Return success string \\
+\hline
+2 &	Valid & Invalid &  Return error message \\
+\hline
+3 &	Invalid & Valid & Return error message \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Test case generation }
+\end{table}
+\pagebreak
+
+\begin{table}
+\begin{tabular}{|p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Test Case & Username & Password & Expected Outcome & Returned Output \\
+\hline
+1& “Tom”& “thomas34” &	Return success string & Success \\
+\hline
+2 &	“Tom” &“thomas34567” &	Return error message &	Login  \\
+\hline 
+3 &	“Johaneslonglenth” & “thomas34” & Return error message & Login 
+ \\
+\hline
+\end{tabular}
+\caption{\label{tab:widgets} Use case-based test for Log in function }
+\end{table}
+
+Overall Score :  8
+Comments: Test cases for this service were excecuted successfully the system can successfully login a user but it does not create a user session to keep track of the user being logged in.
+
 \newpage
 \subsection{Non-functional requirements}
+\subsubsection{Execution Qualities}
+
+\begin{flushleft}
+\begin{tabular}{ |p{0.2\textwidth}|p{0.2\textwidth}| p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Function & Description & Mark & Comment \\
+\hline
+\multirow{3}{*}{Security} & Test 1 - Password Hashing & 
+\multirow{3}{*}{4} & System has no hash functionality \\
+\hline
+& Test 2 - Server side data validation & & The system has very low server-side data validation \\
+\hline
+& Test 3 - API Testing & & The API's protection against a cross site scripting (XSS) attacks is not enforced \\
+\hline
+Usability & Overall usability test & 8 & Overall testing of the subsystem is fair  \\
+\hline
+\end{tabular}
+\end{flushleft}
+\pagebreak
+\subsubsection{Evolution Qualities}
+\begin{flushleft}
+\begin{tabular}{ |p{0.2\textwidth}|p{0.2\textwidth}| p{0.2\textwidth}| p{0.2\textwidth}|p{0.2\textwidth}| }
+\hline
+Function & Mark & Comment \\
+\hline
+Testability & 4 & The system is relatively easy to test but very difficult to install and get packages for.  \\
+\hline
+Maintainability & 10 & The module design looks easily structured and understandable thereby making it very maintainable. \\
+\hline
+Extensibility & 7 & The module is relatively extensible but coding starndards can be improved and applied more extensively  \\
+\hline
+Scalability &  8 & The module is highly scalable and extendable based on the number of dependencies it contains but it can still be relatively improved.  \\
+\hline
+\end{tabular}
+\end{flushleft}
 \newpage
-\subsection{Own define non-functional requirements}
+
 
 \end{document}
